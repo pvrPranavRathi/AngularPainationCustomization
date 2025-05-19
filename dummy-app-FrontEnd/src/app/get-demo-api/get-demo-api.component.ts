@@ -10,9 +10,6 @@ import {MatTableDataSource} from '@angular/material/table';
   styleUrls: ['./get-demo-api.component.css']
 })
 export class GetDemoAPIComponent {
-
-  // products: any[] = [];
-
   constructor(private demoService : DemoService) {}
 
   displayedColumns: string[] = ['demo-id', 'demo-title', 'demo-description', 'demo-price', 'demo-category'];
@@ -53,12 +50,7 @@ export class GetDemoAPIComponent {
     this.totalLoadedData = neededData;
     this.currentPageIndex = currentIndex + 1;
     this.pageIndexByPageSize = this.totalItems / pageSize;
-  
-    // if(neededData > this.dataSource.data.length && this.dataSource.data.length < this.totalItems)
-    // {
-    //   this.currentPage++;
-    //   this.loadProducts(this.currentPage);
-    // }
+
     this.updateNextButtonState();
   }
 
