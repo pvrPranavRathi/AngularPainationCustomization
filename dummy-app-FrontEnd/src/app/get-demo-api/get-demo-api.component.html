@@ -1,27 +1,17 @@
 <h2>Product List</h2>
 
-<!-- [length]="getAdjustedLength()" -->
-
+// Paginator
 <mat-paginator 
   #paginatorContainer
-  [pageSizeOptions]="[5, 10, 20, 1000]"
+  [pageSizeOptions]="[5, 10, 20]" 
   [length]="totalItems"
   showFirstLastButtons
   aria-label="Select page of products"
   (page)="onPageChange($event)">
 </mat-paginator>
 
+// Table
 <div class="mat-elevation-z8">
-
-  <!-- <mat-paginator 
-    [pageSizeOptions]="[5, 10, 20]"
-    [length]="totalItems"
-    [pageSize]="5"
-    showFirstLastButtons
-    aria-label="Select page of products"
-    (page)="onPageChange($event)">
-  </mat-paginator> -->
-
   <table mat-table [dataSource]="dataSource" class="demo-table">
     <!-- Id Column -->
     <ng-container matColumnDef="demo-id">
