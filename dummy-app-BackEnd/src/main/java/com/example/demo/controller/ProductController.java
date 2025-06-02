@@ -15,16 +15,13 @@ public class ProductController {
     @Autowired
     private  ProductService service;
 
-//    public ProductController(ProductService service) {
-//        this.service = service;
-//    }
-
+    // 1000 Products display according to PageNumber
     @GetMapping("get/{pageNumber}")
     public List<Product> getAllProducts(@PathVariable int pageNumber) {
         return service.getProductByPageNumber(pageNumber);
-      //  return service.getAllProducts();
     }
 
+    // Total count of entries in db.json
     @GetMapping("/count")
     public long getTotalProductCount() {
         return service.getTotalProductCount();

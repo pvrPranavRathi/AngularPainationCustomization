@@ -1,10 +1,12 @@
 <h2>{{"PRODUCT_LIST" | translate}}</h2>
 
 <div class="container">
+  <!-- Total Items -->
   <div class="totalItems">
     <span>Total Items : {{totalItems}}</span>
   </div>
 
+  <!-- Paginator -->
   <div class="paginator">
     <mat-paginator
       #paginatorContainer
@@ -16,7 +18,7 @@
   </div>
 </div>
 
-
+<!-- Table -->
 <div class="mat-elevation-z8">
 
   <table mat-table [dataSource]="dataSource" class="demo-table">

@@ -11,10 +11,12 @@ export class DemoService {
 
   constructor(private http: HttpClient) {}
 
+  // Fetches a paginated list of products from the backend API
   getProducts(page: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/get/${page}`);
   }
 
+  // Fetches total count of entries in the products list from backend API
   getTotalCount(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/count`);
   }
