@@ -1,0 +1,10 @@
+{
+  "PRODUCT_LIST": "Product List",
+  "ITEMS_PER_PAGE": "Items per page:",
+  "RANGE": "{{start}} – {{end}} of {{total}}",
+  "ID_NO": "Id No.",
+  "TITLE": "Title",
+  "DESCRIPTION": "Description",
+  "PRICE": "Price",
+  "CATEGORY": "Category"
+}

@@ -1,0 +1,10 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-bottom: 1vh;
+} 
+
+.totalItems{
+    padding-right: 2.5vw;
+}

@@ -1,0 +1,12 @@
+{
+  "PRODUCT_LIST": "Liste de produits",
+  "Product" : "produits",
+  "ITEMS_PER_PAGE": "Articles par page :",
+  "RANGE": "{{start}} – {{end}} sur {{total}}",
+  "ID_NO": "N° d'identification",
+  "TITLE": "Titre",
+  "DESCRIPTION": "Description",
+  "PRICE": "Prix",
+  "CATEGORY": "Catégorie"
+}
+  

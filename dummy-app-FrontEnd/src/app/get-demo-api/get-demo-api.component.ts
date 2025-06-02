@@ -10,9 +10,7 @@ import {MatTableDataSource} from '@angular/material/table';
   styleUrls: ['./get-demo-api.component.css']
 })
 export class GetDemoAPIComponent {
-
-  // products: any[] = [];
-
+  
   constructor(private demoService : DemoService) {}
 
   displayedColumns: string[] = ['demo-id', 'demo-title', 'demo-description', 'demo-price', 'demo-category'];
@@ -45,6 +43,7 @@ export class GetDemoAPIComponent {
       this.loadedPages.add(page);
     });
   }
+  
 
   onPageChange(event: PageEvent): void {
     const currentIndex = event.pageIndex;
@@ -53,12 +52,7 @@ export class GetDemoAPIComponent {
     this.totalLoadedData = neededData;
     this.currentPageIndex = currentIndex + 1;
     this.pageIndexByPageSize = this.totalItems / pageSize;
-  
-    // if(neededData > this.dataSource.data.length && this.dataSource.data.length < this.totalItems)
-    // {
-    //   this.currentPage++;
-    //   this.loadProducts(this.currentPage);
-    // }
+
     this.updateNextButtonState();
   }
 
@@ -83,10 +77,11 @@ export class GetDemoAPIComponent {
 
     if(this.totalLoadedData == this.dataSource.data.length && this.currentPageIndex != this.pageIndexByPageSize)
     {
-      this.loadProducts(pageNumber + 1)
+      this.loadProducts(pageNumber + 1);
+      this.paginator.pageIndex = this.paginator.pageIndex + 1;
+      this.paginator._changePageSize(this.paginator.pageSize);
     }
   }
-  
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;

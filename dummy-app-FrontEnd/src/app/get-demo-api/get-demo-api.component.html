@@ -1,55 +1,52 @@
-<h2>Product List</h2>
+<h2>{{"PRODUCT_LIST" | translate}}</h2>
 
-<!-- [length]="getAdjustedLength()" -->
+<div class="container">
+  <div class="totalItems">
+    <span>Total Items : {{totalItems}}</span>
+  </div>
 
-<mat-paginator 
-  #paginatorContainer
-  [pageSizeOptions]="[5, 10, 20, 1000]"
-  [length]="totalItems"
-  showFirstLastButtons
-  aria-label="Select page of products"
-  (page)="onPageChange($event)">
-</mat-paginator>
+  <div class="paginator">
+    <mat-paginator
+      #paginatorContainer
+      [pageSizeOptions]="[5, 10, 20, 1000]"
+      showFirstLastButtons
+      aria-label="Select page of products"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+</div>
+
 
 <div class="mat-elevation-z8">
-
-  <!-- <mat-paginator 
-    [pageSizeOptions]="[5, 10, 20]"
-    [length]="totalItems"
-    [pageSize]="5"
-    showFirstLastButtons
-    aria-label="Select page of products"
-    (page)="onPageChange($event)">
-  </mat-paginator> -->
 
   <table mat-table [dataSource]="dataSource" class="demo-table">
     <!-- Id Column -->
     <ng-container matColumnDef="demo-id">
-      <th mat-header-cell *matHeaderCellDef> Id No. </th>
+      <th mat-header-cell *matHeaderCellDef> {{"ID_NO" | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
 
     <!-- Title Column -->
     <ng-container matColumnDef="demo-title">
-      <th mat-header-cell *matHeaderCellDef> Title </th>
+      <th mat-header-cell *matHeaderCellDef> {{"TITLE" | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.title}} </td>
     </ng-container>
 
     <!-- Description Column -->
     <ng-container matColumnDef="demo-description">
-      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <th mat-header-cell *matHeaderCellDef> {{"DESCRIPTION" | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.description}} </td>
     </ng-container>
 
     <!-- Price Column -->
     <ng-container matColumnDef="demo-price">
-      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <th mat-header-cell *matHeaderCellDef> {{"PRICE" | translate}} </th>
       <td mat-cell *matCellDef="let element"> ${{element.price}} </td>
     </ng-container>
 
     <!-- Category Column -->
     <ng-container matColumnDef="demo-category">
-      <th mat-header-cell *matHeaderCellDef> Category </th>
+      <th mat-header-cell *matHeaderCellDef> {{"CATEGORY" | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.category}} </td>
     </ng-container>
 
