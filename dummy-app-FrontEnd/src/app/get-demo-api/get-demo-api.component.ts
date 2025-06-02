@@ -10,7 +10,6 @@ import {MatTableDataSource} from '@angular/material/table';
   styleUrls: ['./get-demo-api.component.css']
 })
 export class GetDemoAPIComponent {
-  
   constructor(private demoService : DemoService) {}
 
   displayedColumns: string[] = ['demo-id', 'demo-title', 'demo-description', 'demo-price', 'demo-category'];
