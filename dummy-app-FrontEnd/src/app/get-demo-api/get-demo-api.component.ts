@@ -1,89 +1,106 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { DemoService } from '../demo.service';
-import {AfterViewInit, ViewChild} from '@angular/core';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-get-demo-api',
   templateUrl: './get-demo-api.component.html',
   styleUrls: ['./get-demo-api.component.css']
 })
-export class GetDemoAPIComponent {
-  constructor(private demoService : DemoService) {}
+export class GetDemoAPIComponent implements AfterViewInit {
 
+  constructor(private demoService: DemoService) {}
+
+  // Table configuration
   displayedColumns: string[] = ['demo-id', 'demo-title', 'demo-description', 'demo-price', 'demo-category'];
   dataSource = new MatTableDataSource<any>([]);
 
+  // View references
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('paginatorContainer', { read: ElementRef }) paginatorContainer!: ElementRef;
 
-  currentPage = 1;
+  // State
   totalItems = 0;
   loadedPages = new Set<number>();
+  isOnLastVisiblePage = false;
 
-  totalLoadedData = 0;
-  currentPageIndex = 0;
-  pageIndexByPageSize = 0;
-  
   ngOnInit(): void {
     this.demoService.getTotalCount().subscribe(count => {
       this.totalItems = count;
-      this.loadProducts(this.currentPage);
+      this.loadProducts(1);
     });
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.updateNextButtonState();
+  }
+
+  // Data appended
   loadProducts(page: number): void {
-    if(this.loadedPages.has(page))
-      return;
+    if(this.loadedPages.has(page)) return;
 
     this.demoService.getProducts(page).subscribe(data => {
       this.dataSource.data = [...this.dataSource.data, ...data];
       this.loadedPages.add(page);
     });
   }
-  
 
+  // Tracks every page change
   onPageChange(event: PageEvent): void {
-    const currentIndex = event.pageIndex;
     const pageSize = event.pageSize;
-    const neededData = (currentIndex + 1) * pageSize;
-    this.totalLoadedData = neededData;
-    this.currentPageIndex = currentIndex + 1;
-    this.pageIndexByPageSize = this.totalItems / pageSize;
+    const pageIndex = event.pageIndex;
+    const loadedItems = this.dataSource.data.length;
+
+    const lastLoadedPageIndex = Math.floor((loadedItems - 1) / pageSize);
+    this.isOnLastVisiblePage = pageIndex === lastLoadedPageIndex;
 
     this.updateNextButtonState();
   }
 
   updateNextButtonState(): void {
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       const nextButton: HTMLButtonElement = this.paginatorContainer?.nativeElement
         ?.querySelector('.mat-mdc-paginator-navigation-next');
-  
-      if(nextButton) 
-      {
-        const disable = this.dataSource.data.length >= this.totalItems && this.currentPageIndex == this.pageIndexByPageSize;
-        nextButton.disabled = disable;
 
-        nextButton.onclick = () => this.handleNextButtonClick();
-      }
+      if(!nextButton) return;
+
+      const pageSize = this.paginator.pageSize;
+      const pageIndex = this.paginator.pageIndex;
+      const loadedItems = this.dataSource.data.length;
+      const lastLoadedPageIndex = Math.floor((loadedItems - 1) / pageSize);
+      const moreDataExists = loadedItems < this.totalItems;
+
+      const isLastPage = pageIndex === lastLoadedPageIndex;
+      nextButton.disabled = !moreDataExists && isLastPage;
+
+      nextButton.onclick = () => {
+        if(isLastPage && moreDataExists)
+        {
+          this.handleNextButtonClick();
+        }
+      };
     });
   }
 
   handleNextButtonClick(): void {
-    const dataLoadedInChunks = Math.floor(this.dataSource.data.length / 1000);
-    const pageNumber = dataLoadedInChunks;
+    const pageSize = this.paginator.pageSize;
+    const pageIndex = this.paginator.pageIndex;
+    const loadedItems = this.dataSource.data.length;
 
-    if(this.totalLoadedData == this.dataSource.data.length && this.currentPageIndex != this.pageIndexByPageSize)
+    const lastLoadedPageIndex = Math.floor((loadedItems - 1) / pageSize);
+    const moreDataExists = loadedItems < this.totalItems;
+
+    if(pageIndex === lastLoadedPageIndex && moreDataExists)
     {
-      this.loadProducts(pageNumber + 1);
-      this.paginator.pageIndex = this.paginator.pageIndex + 1;
-      this.paginator._changePageSize(this.paginator.pageSize);
-    }
-  }
+      const nextPageToLoad = Math.floor(loadedItems / 1000) + 1;
+      this.loadProducts(nextPageToLoad);
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.updateNextButtonState();
+      setTimeout(() => {
+        this.paginator.pageIndex = this.paginator.pageIndex + 1;
+        this.paginator._changePageSize(pageSize);
+      }, 100);
+    }
   }
 }
