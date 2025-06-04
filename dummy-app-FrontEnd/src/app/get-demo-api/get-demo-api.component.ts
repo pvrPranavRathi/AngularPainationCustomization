@@ -54,7 +54,7 @@ export class GetDemoAPIComponent implements AfterViewInit {
     const pageIndex = event.pageIndex;
     const loadedItems = this.dataSource.data.length;
 
-    const lastLoadedPageIndex = Math.floor((loadedItems - 1) / pageSize);
+    let lastLoadedPageIndex = Math.floor((loadedItems - 1) / pageSize);
     this.isOnLastVisiblePage = pageIndex === lastLoadedPageIndex;
 
     this.updateNextButtonState();
@@ -112,8 +112,10 @@ export class GetDemoAPIComponent implements AfterViewInit {
     requestAnimationFrame(() => {
       const lastButton: HTMLButtonElement = this.paginatorContainer?.nativeElement
         ?.querySelector('.mat-mdc-paginator-navigation-last');
-      
-      this.lastButtonClickCount++;
+
+      lastButton.onclick = () =>{
+        this.lastButtonClickCount++;
+      }
 
       if (!lastButton) return;
 
